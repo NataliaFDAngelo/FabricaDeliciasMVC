@@ -9,6 +9,7 @@ namespace FabricaDeliciasMVC.Models
 {
     public class Orcamento
     {
+        [Key]
         [DisplayName("Número do Orçamento")]
         public int IdOrcamento { get; set; }
         [DisplayName("Descrição do Orçamento")]

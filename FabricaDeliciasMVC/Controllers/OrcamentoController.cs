@@ -1,4 +1,6 @@
-﻿using FabricaDeliciasMVC.Models;
+﻿using FabricaDeliciasMVC.DataContext;
+using FabricaDeliciasMVC.Helpers;
+using FabricaDeliciasMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +11,15 @@ namespace FabricaDeliciasMVC.Controllers
 {
     public class OrcamentoController : Controller
     {
+        private FabricaDeliciasDB db = new FabricaDeliciasDB();
         // GET: Orcamento
         public ActionResult Index()
         {
-            List<Orcamento> Orcamentos = new List<Orcamento>();
-            Orcamentos.Add(new Orcamento()
-            {
-                IdOrcamento = 1,
-                Descricao = "Primeiro Orçamento",
-                Valor = 10
-            });
-            
-            return View(Orcamentos);
+            List<Orcamento> lOrcamentos = new List<Orcamento>();
+            lOrcamentos = db.Orcamentos.ToList();
+
+
+            return View(lOrcamentos);
         }
 
         // GET: Orcamento/Details/5
@@ -32,18 +31,32 @@ namespace FabricaDeliciasMVC.Controllers
         // GET: Orcamento/Create
         public ActionResult Create()
         {
+            @ViewBag.Clientes = RetornaSelecListItem.Clientes();
+            @ViewBag.Temas = RetornaSelecListItem.Temas();
+            @ViewBag.Pagamentos = RetornaSelecListItem.Pagamentos();
+            @ViewBag.Responsaveis = RetornaSelecListItem.Responsaveis();
+
             return View();
         }
 
         // POST: Orcamento/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Orcamento orcamento)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    db.Orcamentos.Add(orcamento);
+                    db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                @ViewBag.Clientes = RetornaSelecListItem.Clientes();
+                @ViewBag.Temas = RetornaSelecListItem.Temas();
+                @ViewBag.Pagamentos = RetornaSelecListItem.Pagamentos();
+                @ViewBag.Responsaveis = RetornaSelecListItem.Responsaveis();
+                return View();
             }
             catch
             {

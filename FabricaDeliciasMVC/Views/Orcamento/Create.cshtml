@@ -23,7 +23,18 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s8">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">face</i>
+                @Html.DropDownListFor(model => model.ClienteId, new SelectList(ViewBag.Clientes, "Value", "Text"), "Selecione um cliente")
+            </div>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">cake</i>
+                @Html.DropDownListFor(model => model.TemaId, new SelectList(ViewBag.Temas, "Value", "Text"), "Selecione um tema")
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
                 <i class="material-icons prefix">description</i>
                 @Html.EditorFor(model => model.Descricao, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })
@@ -32,12 +43,17 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s8">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">payment</i>
+                @Html.DropDownListFor(model => model.PagamentoId, new SelectList(ViewBag.Pagamentos, "Value", "Text"), "Selecione uma forma de pagamento")
+            </div>
+            <div class="input-field col s6">
                 <i class="material-icons prefix">attach_money</i>
                 @Html.EditorFor(model => model.Valor, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Valor, "", new { @class = "text-danger" })
                 @Html.LabelFor(model => model.Valor, htmlAttributes: new { @class = "active" })
             </div>
+
         </div>
 
         <div class="row center-align">
