@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Fábrica de Delícias</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="light-blue lighten-5">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <nav>
+                <div class="nav-wrapper cyan">
+                    <a class="brand-logo right">Fábrica de Delícias</a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Orçamentos", "Index", "Orcamento")</li>
+                        <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+                        <li>@Html.ActionLink("Temas", "Index", "Tema")</li>
+                        <li>@Html.ActionLink("Formas de Pagamento", "Index", "Pagamento")</li>
+                        <li>@Html.ActionLink("Responsáveis", "Index", "Responsavel")</li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer class="cyan center-align">
+            <p>&copy; @DateTime.Now.Year - Fábrica de Delícias</p>
+        </footer>
+    </div>
+
+
+</body>
+</html>
