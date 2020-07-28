@@ -1,7 +1,11 @@
-﻿using FabricaDeliciasMVC.Models;
+﻿using FabricaDeliciasMVC.DataContext;
+using FabricaDeliciasMVC.Helpers;
+using FabricaDeliciasMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -9,21 +13,15 @@ namespace FabricaDeliciasMVC.Controllers
 {
     public class TemaController : Controller
     {
+        private FabricaDeliciasDB db = new FabricaDeliciasDB();
         // GET: Tema
         public ActionResult Index()
         {
-            List<Tema> Temas = new List<Tema>();
-            Temas.Add(new Tema()
-            {
-                IdTema = 1,
-                Nome = "Dinossauro"
-            });
-            Temas.Add(new Tema()
-            {
-                IdTema = 2,
-                Nome = "Moana"
-            });
-            return View(Temas);
+
+            List<Tema> lTemas = new List<Tema>();
+            lTemas = db.Temas.ToList();
+
+            return View(lTemas);
         }
 
         // GET: Tema/Details/5
@@ -34,19 +32,29 @@ namespace FabricaDeliciasMVC.Controllers
 
         // GET: Tema/Create
         public ActionResult Create()
-        { 
+        {
+            @ViewBag.Temas = RetornaSelecListItem.Temas();
+
             return View();
         }
 
         // POST: Tema/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Tema tema)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    db.Temas.Add(tema);
+                    db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                @ViewBag.Temas = RetornaSelecListItem.Temas();
+
+                return View();
             }
             catch
             {
@@ -55,20 +63,36 @@ namespace FabricaDeliciasMVC.Controllers
         }
 
         // GET: Tema/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id.Equals(0))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Tema tema = db.Temas.Find(id);
+
+            @ViewBag.Temas = RetornaSelecListItem.Temas();
+
+            return View(tema);
         }
 
         // POST: Tema/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Tema tema)
         {
             try
             {
-                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tema).State = EntityState.Modified;
+                    db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                @ViewBag.Temas = RetornaSelecListItem.Temas();
+
+                return View();
             }
             catch
             {

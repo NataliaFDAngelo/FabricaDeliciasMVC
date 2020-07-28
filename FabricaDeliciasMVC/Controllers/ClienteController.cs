@@ -1,31 +1,24 @@
-﻿using FabricaDeliciasMVC.Models;
+﻿using FabricaDeliciasMVC.DataContext;
+using FabricaDeliciasMVC.Helpers;
+using FabricaDeliciasMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FabricaDeliciasMVC.Controllers
 {
     public class ClienteController : Controller
     {
+        private FabricaDeliciasDB db = new FabricaDeliciasDB();
+
         // GET: Cliente
         public ActionResult Index()
         {
-            List<Cliente> Clientes = new List<Cliente>();
-            Clientes.Add(new Cliente()
-            {
-                IdCliente = 1,
-                Nome = "Leonardo",
-                Telefone = "99999-9999"
-            });
-            Clientes.Add(new Cliente()
-            {
-                IdCliente = 2,
-                Nome = "Natalia",
-                Telefone = "99999-9999"
-            });
-            return View(Clientes);
+            List<Cliente> lClientes = new List<Cliente>();
+            lClientes = db.Clientes.ToList();
+
+            return View(lClientes);
         }
 
         // GET: Cliente/Details/5
@@ -37,18 +30,28 @@ namespace FabricaDeliciasMVC.Controllers
         // GET: Cliente/Create
         public ActionResult Create()
         {
+            @ViewBag.Responsaveis = RetornaSelecListItem.Responsaveis();
+
             return View();
         }
 
         // POST: Cliente/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Cliente cliente)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    db.Clientes.Add(cliente);
+                    db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                @ViewBag.Clientes = RetornaSelecListItem.Clientes();
+
+                return View();
             }
             catch
             {

@@ -7,6 +7,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select').formSelect();
+            $('.modal').modal();
+        });
+    </script>
 </head>
 <body class="light-blue lighten-5">
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -27,15 +36,6 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('select').formSelect();
-        });
-    </script>
-
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -43,7 +43,6 @@
             <p>&copy; @DateTime.Now.Year - Fábrica de Delícias</p>
         </footer>
     </div>
-
 
 </body>
 </html>

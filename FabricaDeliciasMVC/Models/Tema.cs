@@ -10,5 +10,7 @@ namespace FabricaDeliciasMVC.Models
         public int IdTema { get; set; }
         [DisplayName("Nome do Tema")]
         public string Nome { get; set; }
+        [DisplayName("Descrição do Tema")]
+        public string Descricao { get; set; }
     }
 }

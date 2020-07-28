@@ -1,4 +1,6 @@
-﻿using FabricaDeliciasMVC.Models;
+﻿using FabricaDeliciasMVC.DataContext;
+using FabricaDeliciasMVC.Helpers;
+using FabricaDeliciasMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +11,15 @@ namespace FabricaDeliciasMVC.Controllers
 {
     public class PagamentoController : Controller
     {
+        private FabricaDeliciasDB db = new FabricaDeliciasDB();
+
         // GET: Pagamento
         public ActionResult Index()
         {
-            List<Pagamento> Pagamentos = new List<Pagamento>();
-            Pagamentos.Add(new Pagamento()
-            {
-                IdPagamento = 1,
-                Nome = "Dinheiro"
-            });
-            Pagamentos.Add(new Pagamento()
-            {
-                IdPagamento = 2,
-                Nome = "Cartão Crédito"
-            });
-            return View(Pagamentos);
+            List<Pagamento> lPagamentos = new List<Pagamento>();
+            lPagamentos = db.Pagamentos.ToList();
+
+            return View(lPagamentos);
         }
 
         // GET: Pagamento/Details/5
@@ -35,16 +31,26 @@ namespace FabricaDeliciasMVC.Controllers
         // GET: Pagamento/Create
         public ActionResult Create()
         {
+            @ViewBag.Pagamentos = RetornaSelecListItem.Pagamentos();
+
             return View();
         }
 
         // POST: Pagamento/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Pagamento pagamento)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    db.Pagamentos.Add(pagamento);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+
+                @ViewBag.Pagamentos = RetornaSelecListItem.Pagamentos();
 
                 return RedirectToAction("Index");
             }
