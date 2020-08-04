@@ -200,8 +200,8 @@
     <Content Include="Views\Cliente\Index.cshtml" />
     <Content Include="Views\Orcamento\Index.cshtml" />
     <Content Include="Views\Orcamento\Edit.cshtml" />
-    <Content Include="Views\Orcamento\Details.cshtml" />
     <Content Include="Views\Tema\Edit.cshtml" />
+    <Content Include="Views\Responsavel\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

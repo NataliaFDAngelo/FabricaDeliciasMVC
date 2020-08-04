@@ -3,6 +3,7 @@ using FabricaDeliciasMVC.Helpers;
 using FabricaDeliciasMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,12 +23,6 @@ namespace FabricaDeliciasMVC.Controllers
             return View(lResponsaveis);
         }
 
-        // GET: Responsavel/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: Responsavel/Create
         public ActionResult Create()
         {
@@ -38,6 +33,7 @@ namespace FabricaDeliciasMVC.Controllers
 
         // POST: Responsavel/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Responsavel responsavel)
         {
             try
@@ -63,18 +59,32 @@ namespace FabricaDeliciasMVC.Controllers
         // GET: Responsavel/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Responsavel responsavel = db.Responsaveis.Find(id);
+
+            if(responsavel.IdResponsavel == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(responsavel);
         }
 
         // POST: Responsavel/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Responsavel responsavel)
         {
             try
             {
-                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+                    db.Entry(responsavel).State = EntityState.Modified;
+                    db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                return View(responsavel);
             }
             catch
             {
@@ -88,15 +98,17 @@ namespace FabricaDeliciasMVC.Controllers
             return View();
         }
 
-        // POST: Responsavel/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Responsavel responsaveis)
         {
             try
             {
-                // TODO: Add delete logic here
+                Responsavel responsavel = db.Responsaveis.Find(id);
+                db.Responsaveis.Attach(responsavel);
+                db.Responsaveis.Remove(responsavel);
+                db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return Content("Responsável removida com sucesso");
             }
             catch
             {

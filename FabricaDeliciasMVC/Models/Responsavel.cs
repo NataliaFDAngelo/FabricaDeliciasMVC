@@ -8,6 +8,7 @@ namespace FabricaDeliciasMVC.Models
         [Key]
         [DisplayName ("Número da Responsável")]
         public int IdResponsavel { get; set; }
+        [Required]
         [DisplayName("Nome da Responsável")]
         public string Nome { get; set; }
     }

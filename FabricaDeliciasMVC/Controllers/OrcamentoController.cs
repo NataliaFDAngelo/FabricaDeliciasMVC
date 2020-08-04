@@ -67,9 +67,9 @@ namespace FabricaDeliciasMVC.Controllers
         }
 
         // GET: Orcamento/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            if(id.Equals(0))
+            if (id.Equals(0))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -97,12 +97,13 @@ namespace FabricaDeliciasMVC.Controllers
 
                     return RedirectToAction("Index");
                 }
+
                 @ViewBag.Clientes = RetornaSelecListItem.Clientes();
                 @ViewBag.Temas = RetornaSelecListItem.Temas();
                 @ViewBag.Pagamentos = RetornaSelecListItem.Pagamentos();
                 @ViewBag.Responsaveis = RetornaSelecListItem.Responsaveis();
-                
-                return View();
+
+                return View(orcamento);
             }
             catch
             {
@@ -110,26 +111,18 @@ namespace FabricaDeliciasMVC.Controllers
             }
         }
 
-        // GET: Orcamento/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Orcamento/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ContentResult Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var orcamento = db.Orcamentos.Find(id);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            db.Orcamentos.Attach(orcamento);
+            db.Orcamentos.Remove(orcamento);
+            db.SaveChanges();
+
+            return Content("Orçamento excluido com sucesso");
         }
+
+
     }
 }
