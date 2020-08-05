@@ -5,41 +5,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<p>
-    @Html.ActionLink("Cadastrar Cliente", "Create", null, new { @class = "waves-effect waves-light btn" })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IdCliente)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nome)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Telefone)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    <p>
+        @Html.ActionLink("Cadastrar Cliente", "Create", null, new { @class = "waves-effect waves-light btn" })
+    </p>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdCliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefone)
+            </th>
+            <th>
+                Editar
+            </th>
+            <th>
+                Excluir
+            </th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdCliente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefone)
+                </td>
+                <td>
+                    <a class="btn-floating waves-effect waves-light" href="@Url.Action("Edit", "Cliente", new { id = item.IdCliente })">
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                </td>
+                <td>
+                    <a id="btnExcluirCliente" href="#modal" class="btn-floating waves-effect waves-light btn modal-trigger" data-id="@item.IdCliente">
+                        <i class="material-icons">delete</i>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h4>Você deseja excluir este cliente?</h4>
+        <p>Ao clicar no botão Confirmar, não é possível reverter a exclusão.</p>
+    </div>
+    <div class="modal-footer">
+        @Html.AntiForgeryToken()
+        <button data-target="modal" id="btnConfirmarExclusao" type="button" class="modal-close waves-effect waves-green btn-flat">Confirmar</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var IdResponsavel;
+    $('btnExcluirReponsavel').click(function () {
+        IdResponsavel = $(this).attr('data-id');
+        $('#modal').modal('show');
+    });
+
+    $('btnConfirmarExclusao').click(function () {
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            url: 'Delete',
+            type: 'post',
+            data: {
+                __RequestVerificationToken: token,
+                id: responsavelId
+            },
+            success: function (data) {
+                return window.location.reload();
+            }
+        });
+    });
+</script>

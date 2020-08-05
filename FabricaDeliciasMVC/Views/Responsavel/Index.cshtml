@@ -38,12 +38,12 @@
                     @Html.DisplayFor(modelItem => item.Nome)
                 </td>
                 <td>
-                    <a class="btn-floating waves-effect waves-light red" href="@Url.Action("Edit", "Responsavel", new { id = item.IdResponsavel })">
+                    <a class="btn-floating waves-effect waves-light" href="@Url.Action("Edit", "Responsavel", new { id = item.IdResponsavel })">
                         <i class="material-icons">mode_edit</i>
                     </a>
                 </td>
                 <td>
-                    <a id="btnExcluirReponsavel" href="#modal" class="btn-floating waves-effect waves-light btn red modal-trigger" data-id="@item.IdResponsavel">
+                    <a id="btnExcluirReponsavel" href="#modal" class="btn-floating waves-effect waves-light btn modal-trigger" data-id="@item.IdResponsavel">
                         <i class="material-icons">delete</i>
                     </a>
                 </td>

@@ -111,16 +111,23 @@ namespace FabricaDeliciasMVC.Controllers
             }
         }
 
+
         [HttpPost]
-        public ContentResult Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var orcamento = db.Orcamentos.Find(id);
+            try
+            {
+                Orcamento orcamento = db.Orcamentos.Find(id);
+                db.Orcamentos.Attach(orcamento);
+                db.Orcamentos.Remove(orcamento);
+                db.SaveChanges();
 
-            db.Orcamentos.Attach(orcamento);
-            db.Orcamentos.Remove(orcamento);
-            db.SaveChanges();
-
-            return Content("Orçamento excluido com sucesso");
+                return Content("Orçamento removido com sucesso");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
 
