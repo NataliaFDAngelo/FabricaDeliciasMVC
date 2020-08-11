@@ -202,6 +202,10 @@
     <Content Include="Views\Orcamento\Edit.cshtml" />
     <Content Include="Views\Tema\Edit.cshtml" />
     <Content Include="Views\Responsavel\Edit.cshtml" />
+    <Content Include="Views\Responsavel\Delete.cshtml" />
+    <Content Include="Views\Tema\Delete.cshtml" />
+    <Content Include="Views\Pagamento\Delete.cshtml" />
+    <Content Include="Views\Orcamento\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

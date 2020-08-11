@@ -24,12 +24,6 @@ namespace FabricaDeliciasMVC.Controllers
             return View(lTemas);
         }
 
-        // GET: Tema/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: Tema/Create
         public ActionResult Create()
         {
@@ -101,18 +95,22 @@ namespace FabricaDeliciasMVC.Controllers
         }
 
         // GET: Tema/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
             return View();
         }
 
         // POST: Tema/Delete/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                Tema tema = db.Temas.Find(id);
+
+                db.Temas.Remove(tema);
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }

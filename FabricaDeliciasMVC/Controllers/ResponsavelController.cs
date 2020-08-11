@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -59,12 +60,14 @@ namespace FabricaDeliciasMVC.Controllers
         // GET: Responsavel/Edit/5
         public ActionResult Edit(int id)
         {
+            if (id.Equals(0))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             Responsavel responsavel = db.Responsaveis.Find(id);
 
-            if(responsavel.IdResponsavel == null)
-            {
-                return HttpNotFound();
-            }
+            @ViewBag.Temas = RetornaSelecListItem.Responsaveis();
 
             return View(responsavel);
         }
@@ -93,22 +96,23 @@ namespace FabricaDeliciasMVC.Controllers
         }
 
         // GET: Responsavel/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Delete(int id, Responsavel responsaveis)
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
         {
             try
             {
                 Responsavel responsavel = db.Responsaveis.Find(id);
-                db.Responsaveis.Attach(responsavel);
+                
                 db.Responsaveis.Remove(responsavel);
                 db.SaveChanges();
 
-                return Content("Responsável removida com sucesso");
+                return RedirectToAction("Index");
             }
             catch
             {

@@ -21,12 +21,6 @@ namespace FabricaDeliciasMVC.Controllers
             return View(lClientes);
         }
 
-        // GET: Cliente/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: Cliente/Create
         public ActionResult Create()
         {
@@ -82,18 +76,21 @@ namespace FabricaDeliciasMVC.Controllers
         }
 
         // GET: Cliente/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
             return View();
         }
 
-        // POST: Cliente/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
         {
             try
             {
-                // TODO: Add delete logic here
+                Cliente cliente = db.Clientes.Find(id);
+
+                db.Clientes.Remove(cliente);
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }

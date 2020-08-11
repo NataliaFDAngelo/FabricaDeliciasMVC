@@ -84,6 +84,11 @@ namespace FabricaDeliciasMVC.Controllers
             return View(orcamento);
         }
 
+        public ActionResult Delete(int? id)
+        {
+            return View();
+        }
+
         // POST: Orcamento/Edit/5
         [HttpPost]
         public ActionResult Edit(Orcamento orcamento)
@@ -111,25 +116,23 @@ namespace FabricaDeliciasMVC.Controllers
             }
         }
 
-
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             try
             {
                 Orcamento orcamento = db.Orcamentos.Find(id);
-                db.Orcamentos.Attach(orcamento);
+
                 db.Orcamentos.Remove(orcamento);
                 db.SaveChanges();
 
-                return Content("Orçamento removido com sucesso");
+                return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
         }
-
-
     }
 }
